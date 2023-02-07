@@ -6,10 +6,10 @@ from sklearn.utils import shuffle
 import sys
 
 num_range = 700             # base range of data point cordinates
-total_points = 50000
+total_points = int(sys.argv[1]) 
 print("total points:", total_points)
          # total number of data points
-noise = 10000                  # data points that are not generated near a blob_center
+noise = 25                  # data points that are not generated near a blob_center
 K = 4                       # number of blobs
 N = total_points - noise    # data points to be generated near blob_center
 
@@ -60,7 +60,7 @@ X = shuffle(X)
 
 # Save the array of data points in file as per the format
 filename = "dataset_" + str(total_points) + "_" + str(K) + ".txt"
-np.savetxt(filename, X, fmt="%d", comments='')
+np.savetxt(filename, X, fmt="%d", header=str(total_points), comments='')
 
 print ("finished")
 # Shows 3D plot for visualization 

@@ -122,7 +122,9 @@ void kmeans_openmp_thread(int *tid)
         data_point_cluster_global[i * 4 + 3] = point_to_cluster[i - start];
         assert(point_to_cluster[i - start] >= 0 && point_to_cluster[i - start] < K_global);
     }
+    //return delta_global;
 }
+
 
 void kmeans_omp(int num_threads,
                     int N,

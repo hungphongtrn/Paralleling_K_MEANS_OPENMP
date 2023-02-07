@@ -41,7 +41,7 @@ void kmeans_sequential_execution()
         for (i = 0; i < num_points_global; i++)
         {
             //assign these points to their nearest cluster
-            min_dist = DBL_MAX;
+            min_dist = DBL_MAX; //the value of maximum representable finite floating-point (double)
             for (j = 0; j < K_global; j++)
             {
                 current_dist = pow((double)(centroids_global[(iter_counter * K_global + j) * 3] - (float)data_points_global[i * 3]), 2.0) +
@@ -60,7 +60,8 @@ void kmeans_sequential_execution()
             cluster_location[point_to_cluster[i] * 3 + 1] += (float)data_points_global[i * 3 + 1];
             cluster_location[point_to_cluster[i] * 3 + 2] += (float)data_points_global[i * 3 + 2];
         }
-        //write cluster_location to centroids_global
+        //write cluster_location to centroids_global 
+        //average coordinates to have new clusters
         for (i = 0; i < K_global; i++)
         {
             assert(cluster_count[i] != 0);
@@ -68,10 +69,6 @@ void kmeans_sequential_execution()
             centroids_global[((iter_counter + 1) * K_global + i) * 3 + 1] = cluster_location[i * 3 + 1] / cluster_count[i];
             centroids_global[((iter_counter + 1) * K_global + i) * 3 + 2] = cluster_location[i * 3 + 2] / cluster_count[i];
         }
-        // for (i = 0; i < K_global; i++)
-        // {
-        //     printf("Sequential print of centroid # \033[1;31m%d: %f,%f,%f\n\033[0m", i + 1, centroids_global[((iter_counter + 1) * K_global + i) * 3], centroids_global[((iter_counter + 1) * K_global + i) * 3 + 1], centroids_global[((iter_counter + 1) * K_global + i) * 3 + 2]);
-        // }
         /*Convergence check: Sum of L2-norms over every cluster*/
         temp_delta = 0.0;
         for (i = 0; i < K_global; i++)
@@ -79,7 +76,6 @@ void kmeans_sequential_execution()
             temp_delta += (centroids_global[((iter_counter + 1) * K_global + i) * 3] - centroids_global[((iter_counter)*K_global + i) * 3]) * (centroids_global[((iter_counter + 1) * K_global + i) * 3] - centroids_global[((iter_counter)*K_global + i) * 3]) + (centroids_global[((iter_counter + 1) * K_global + i) * 3 + 1] - centroids_global[((iter_counter)*K_global + i) * 3 + 1]) * (centroids_global[((iter_counter + 1) * K_global + i) * 3 + 1] - centroids_global[((iter_counter)*K_global + i) * 3 + 1]) + (centroids_global[((iter_counter + 1) * K_global + i) * 3 + 2] - centroids_global[((iter_counter)*K_global + i) * 3 + 2]) * (centroids_global[((iter_counter + 1) * K_global + i) * 3 + 2] - centroids_global[((iter_counter)*K_global + i) * 3 + 2]);
         }
         delta_global = temp_delta;
-        //printf("Sequential delta_global:%f\n", delta_global);
         iter_counter++;
     }
     num_iterations_global = iter_counter;
